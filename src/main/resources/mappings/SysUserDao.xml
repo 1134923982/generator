@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.springbootgenerator.dao._SysUserDao">
+
+    <resultMap id="sysUserResultMap" type="com.example.generator.entity.SysUserEntity">
+        <id column="userId" property="userId"/> 
+        <result column="username" property="username"/> 
+        <result column="password" property="password"/> 
+        <result column="email" property="email"/> 
+        <result column="mobile" property="mobile"/> 
+        <result column="status" property="status"/> 
+        <result column="createUserId" property="createUserId"/> 
+        <result column="createTime" property="createTime"/> 
+        <result column="deptId" property="deptId"/>
+    </resultMap>
+
+    <sql id="sysUserColumns">
+        sys_user.user_id AS "userId",
+        sys_user.username AS "username",
+        sys_user.password AS "password",
+        sys_user.email AS "email",
+        sys_user.mobile AS "mobile",
+        sys_user.status AS "status",
+        sys_user.create_user_id AS "createUserId",
+        sys_user.create_time AS "createTime",
+        sys_user.dept_id AS "deptId"
+    </sql>
+
+    <sql id="sysUserJoins">
+        
+    </sql>
+
+    <select id="get" resultMap="sysUserResultMap">
+        SELECT
+        <include refid="sysUserColumns" />
+        FROM sys_user <include refid="sysUserJoins" />
+        <where>
+        sys_user.user_id = #{id}
+        </where>
+    </select>
+
+    <select id="findList" resultMap="sysUserResultMap">
+        SELECT
+        <include refid="sysUserColumns" />
+        FROM sys_user <include refid="sysUserJoins" />
+        <where>
+        </where>
+    </select>
+
+    <select id="findAllList" resultMap="sysUserResultMap">
+        SELECT
+        <include refid="sysUserColumns" />
+        FROM sys_user <include refid="sysUserJoins" />
+        <where>
+        </where>
+    </select>
+
+    <insert id="insert">
+        INSERT INTO sys_user(
+            user_id,
+            username,
+            password,
+            email,
+            mobile,
+            status,
+            create_user_id,
+            create_time,
+            dept_id
+        )
+        VALUES (
+            #{userId},
+            #{username},
+            #{password},
+            #{email},
+            #{mobile},
+            #{status},
+            #{createUserId},
+            #{createTime},
+            #{deptId}
+        )
+    </insert>
+
+    <insert id="insertBatch">
+        INSERT INTO sys_user(
+            user_id,
+            username,
+            password,
+            email,
+            mobile,
+            status,
+            create_user_id,
+            create_time,
+            dept_id
+        )
+        VALUES
+        <foreach collection ="list" item="sysUser" separator =",">
+        (
+            #{sysUser.userId},
+            #{sysUser.username},
+            #{sysUser.password},
+            #{sysUser.email},
+            #{sysUser.mobile},
+            #{sysUser.status},
+            #{sysUser.createUserId},
+            #{sysUser.createTime},
+            #{sysUser.deptId}
+        )
+        </foreach>
+    </insert>
+
+    <update id="update">
+        UPDATE sys_user SET
+        user_id = #{userId},
+        username = #{username},
+        password = #{password},
+        email = #{email},
+        mobile = #{mobile},
+        status = #{status},
+        create_user_id = #{createUserId},
+        create_time = #{createTime},
+        dept_id = #{deptId}
+        WHERE user_id = #{userId}
+    </update>
+
+    <update id="delete">
+        DELETE FROM sys_user
+        WHERE user_id = #{userId}
+    </update>
+
+</mapper>
