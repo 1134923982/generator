@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.generator.dao.UserDetailDao">
+
+    <resultMap type="com.example.generator.entity.UserDetailEntity" id="userDetailMap">
+        <result property="id" column="id"/>
+        <result property="userid" column="userId"/>
+        <result property="name" column="name"/>
+        <result property="sex" column="sex"/>
+        <result property="type" column="type"/>
+        <result property="headurl" column="headUrl"/>
+        <result property="introduction" column="introduction"/>
+        <result property="majorintroduct" column="majorIntroduct"/>
+        <result property="usertypeid" column="userTypeId"/>
+        <result property="idcard" column="IDCard"/>
+        <result property="documenttype" column="documentType"/>
+        <result property="idcardfaceurl" column="IDCardFaceUrl"/>
+        <result property="idcardbackurl" column="IDCardBackUrl"/>
+        <result property="usercerfaceurl" column="userCerFaceUrl"/>
+        <result property="usercerbackurl" column="userCerBackUrl"/>
+        <result property="userpic" column="userPic"/>
+        <result property="city" column="city"/>
+        <result property="professionname" column="professionName"/>
+        <result property="hospitalname" column="hospitalName"/>
+        <result property="firstworkposition" column="firstWorkPosition"/>
+        <result property="firstworklnglat" column="firstWorkLngLat"/>
+        <result property="secondworklnglat" column="secondWorkLngLat"/>
+        <result property="secondworkposition" column="secondWorkPosition"/>
+        <result property="thirdworklnglat" column="thirdWorkLngLat"/>
+        <result property="thirdworkposition" column="thirdWorkPosition"/>
+        <result property="status" column="status"/>
+        <result property="allowjb" column="allowjb"/>
+        <result property="allowbuy" column="allowbuy"/>
+        <result property="allowchat" column="allowchat"/>
+        <result property="checkcomment" column="checkComment"/>
+        <result property="bank" column="bank"/>
+        <result property="banknum" column="banknum"/>
+        <result property="feerate" column="feeRate"/>
+        <result property="feeratestarttime" column="feeRateStartTime"/>
+        <result property="feerateendtime" column="feeRateEndTime"/>
+        <result property="convertrate" column="convertRate"/>
+        <result property="ratevalidatestarttime" column="rateValidateStartTime"/>
+        <result property="ratevalidateendtime" column="rateValidateEndTime"/>
+        <result property="createtime" column="createTime"/>
+        <result property="modifytime" column="modifyTime"/>
+        <result property="birthday" column="birthday"/>
+    </resultMap>
+
+
+    <select id="queryList" resultType="com.example.generator.entity.UserDetailEntity">
+        select
+           `id`,
+           `userId`,
+           `name`,
+           `sex`,
+           `type`,
+           `headUrl`,
+           `introduction`,
+           `majorIntroduct`,
+           `userTypeId`,
+           `IDCard`,
+           `documentType`,
+           `IDCardFaceUrl`,
+           `IDCardBackUrl`,
+           `userCerFaceUrl`,
+           `userCerBackUrl`,
+           `userPic`,
+           `city`,
+           `professionName`,
+           `hospitalName`,
+           `firstWorkPosition`,
+           `firstWorkLngLat`,
+           `secondWorkLngLat`,
+           `secondWorkPosition`,
+           `thirdWorkLngLat`,
+           `thirdWorkPosition`,
+           `status`,
+           `allowjb`,
+           `allowbuy`,
+           `allowchat`,
+           `checkComment`,
+           `bank`,
+           `banknum`,
+           `feeRate`,
+           `feeRateStartTime`,
+           `feeRateEndTime`,
+           `convertRate`,
+           `rateValidateStartTime`,
+           `rateValidateEndTime`,
+           `createTime`,
+           `modifyTime`,
+           `birthday`
+        from user_detail
+        WHERE 1=1
+        <if test="name != null and name.trim() != ''">
+            AND name LIKE concat('%',#{name},'%')
+        </if>
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+            <otherwise>
+                order by id desc
+            </otherwise>
+        </choose>
+        <if test="offset != null and limit != null">
+            limit #{offset},#{limit}
+        </if>
+    </select>
+
+    <select id="queryTotal" resultType="int">
+        select count(*) from user_detail
+        WHERE 1=1
+        <if test="name != null and name.trim() != ''">
+            AND name LIKE concat('%',#{name},'%')
+        </if>
+    </select>
+
+</mapper>

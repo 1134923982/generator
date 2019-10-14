@@ -1,15 +1,15 @@
-package ${BasePackageName}${InterfacePackageName};
+package com.example.generator.service;
 
-import ${BasePackageName}${EntityPackageName}.${ClassName}Entity;
+import com.example.generator.entity.UserDetailEntity;
 
 import java.util.List;
 import java.util.Map;
 
 /**
- * Author ${Author}
- * Date  ${Date}
+ * Author Liumq
+ * Date  2019-10-14
  */
-public interface ${ClassName}Service {
+public interface UserDetailService {
 
     /**
      * 分页查询
@@ -17,7 +17,7 @@ public interface ${ClassName}Service {
      * @param map 参数
      * @return list
      */
-    List<${ClassName}Entity> queryList(Map<String, Object> map);
+    List<UserDetailEntity> queryList(Map<String, Object> map);
 
     /**
     * 分页统计总数

@@ -28,9 +28,9 @@ public class Constant {
     /**
      * 菜单类型
      *
-     * @author feking.fang
-     * @email feking.fang@smallshark.cn
-     * @date 2016年11月15日 下午1:24:29
+     * @author Liumq
+     * @email 1600148841@qq.com
+     * @date 2019/10/14
      */
     public enum MenuType {
         /**
@@ -60,9 +60,9 @@ public class Constant {
     /**
      * 定时任务状态
      *
-     * @author feking.fang
-     * @email feking.fang@smallshark.cn
-     * @date 2016年12月3日 上午12:07:22
+     * @author Liumq
+     * @email 1600148841@qq.com
+     * @date 2019/10/14
      */
     public enum ScheduleStatus {
         /**

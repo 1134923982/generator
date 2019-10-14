@@ -41,6 +41,7 @@ public class ControllerTask extends AbstractTask {
         controllerData.put("Author", ConfigUtil.getConfiguration().getAuthor());
         controllerData.put("Date", new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
         controllerData.put("ClassName", className);
+        controllerData.put("pathName",className.toLowerCase());
         controllerData.put("EntityName", StringUtil.firstToLowerCase(className));
         String filePath = FileUtil.getSourcePath() + StringUtil.package2Path(ConfigUtil.getConfiguration().getPackageName()) + StringUtil.package2Path(ConfigUtil.getConfiguration().getPath().getController());
         String fileName = className + "Controller.java";

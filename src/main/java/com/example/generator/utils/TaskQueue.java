@@ -1,6 +1,6 @@
 package com.example.generator.utils;
 
-import com.example.generator.entity.ColumnInfo;
+import com.example.generator.entity.ColumnEntity;
 import com.example.generator.task.*;
 import com.example.generator.task.base.AbstractTask;
 
@@ -29,43 +29,25 @@ public class TaskQueue {
         if (!StringUtil.isBlank(ConfigUtil.getConfiguration().getPath().getDao())) {
             taskQueue.add(new DaoTask(className));
         }
+    }
+
+    public void initSingleTasks(String className, String tableName, List<ColumnEntity> columnList,ColumnEntity primaryKey) {
+        initCommonTasks(className);
+        //初始化mappers
+        if (!StringUtil.isBlank(ConfigUtil.getConfiguration().getPath().getMapper())) {
+            taskQueue.add(new MapperTask(className,tableName,columnList,primaryKey));
+        }
+        //entity的初始化
+        if (!StringUtil.isBlank(ConfigUtil.getConfiguration().getPath().getEntity())) {
+            taskQueue.add(new EntityTask(className,columnList));
+        }
+        //html界面的初始化
         if(!StringUtil.isBlank(ConfigUtil.getConfiguration().getPath().getHtml())){
-            taskQueue.add(new HtmlTask(className));
+            taskQueue.add(new HtmlTask(className,columnList));
         }
+        //js的初始化
         if(!StringUtil.isBlank(ConfigUtil.getConfiguration().getPath().getJs())){
-            taskQueue.add(new JsTask(className));
-        }
-    }
-
-    public void initSingleTasks(String className, String tableName, List<ColumnInfo> tableInfos) {
-        initCommonTasks(className);
-        if (!StringUtil.isBlank(ConfigUtil.getConfiguration().getPath().getEntity())) {
-            taskQueue.add(new EntityTask(className, tableInfos));
-        }
-        if (!StringUtil.isBlank(ConfigUtil.getConfiguration().getPath().getMapper())) {
-            taskQueue.add(new MapperTask(className, tableName, tableInfos));
-        }
-    }
-
-    public void initOne2ManyTasks(String tableName, String className, String parentTableName, String parentClassName, String foreignKey, List<ColumnInfo> tableInfos, List<ColumnInfo> parentTableInfos) {
-        initCommonTasks(className);
-        if (!StringUtil.isBlank(ConfigUtil.getConfiguration().getPath().getEntity())) {
-            taskQueue.add(new EntityTask(className, parentClassName, foreignKey, tableInfos));
-            taskQueue.add(new EntityTask(parentClassName, parentTableInfos));
-        }
-        if (!StringUtil.isBlank(ConfigUtil.getConfiguration().getPath().getMapper())) {
-            taskQueue.add(new MapperTask(tableName, className, parentTableName, parentClassName, foreignKey, tableInfos, parentTableInfos));
-        }
-    }
-
-    public void initMany2ManyTasks(String tableName, String className, String parentTableName, String parentClassName, String foreignKey, String parentForeignKey, String relationalTableName, List<ColumnInfo> tableInfos, List<ColumnInfo> parentTableInfos) {
-        initCommonTasks(className);
-        if (!StringUtil.isBlank(ConfigUtil.getConfiguration().getPath().getEntity())) {
-            taskQueue.add(new EntityTask(className, parentClassName, foreignKey, parentForeignKey, tableInfos));
-            taskQueue.add(new EntityTask(parentClassName, parentTableInfos));
-        }
-        if (!StringUtil.isBlank(ConfigUtil.getConfiguration().getPath().getMapper())) {
-            taskQueue.add(new MapperTask(tableName, className, parentTableName, parentClassName, foreignKey, parentForeignKey, relationalTableName, tableInfos, parentTableInfos));
+            taskQueue.add(new JsTask(className,columnList));
         }
     }
 

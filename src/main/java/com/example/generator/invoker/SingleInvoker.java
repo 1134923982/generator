@@ -5,6 +5,7 @@ import com.example.generator.entity.ColumnEntity;
 import com.example.generator.entity.ColumnInfo;
 import com.example.generator.invoker.base.AbstractInvoker;
 import com.example.generator.utils.ConfigUtil;
+import com.example.generator.utils.Constant;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.WordUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,15 +71,15 @@ public class SingleInvoker extends AbstractInvoker {
             columnEntity.setAttrType(attrType);
 
             //是否主键
-//            if ("ORACLE".equals(Constant.USE_DATA)) {
-//                if ((column.get("columnName").equalsIgnoreCase(column.get("columnKey")) && tableEntity.getPk() == null)) {
-//                    tableEntity.setPk(columnEntity);
-//                }
-//            } else {
-//                if (("PRI".equalsIgnoreCase(column.get("columnKey")) && tableEntity.getPk() == null)) {
-//                    tableEntity.setPk(columnEntity);
-//                }
-//            }
+            if ("ORACLE".equals(Constant.USE_DATA)) {
+                if ((column.get("columnName").equalsIgnoreCase(column.get("columnKey")) &&  primaryKey== null)) {
+                    primaryKey=columnEntity;
+                }
+            } else {
+                if (("PRI".equalsIgnoreCase(column.get("columnKey")) && primaryKey == null)) {
+                    primaryKey=columnEntity;
+                }
+            }
             columsList.add(columnEntity);
         }
         tableInfos = endList;
@@ -87,7 +88,7 @@ public class SingleInvoker extends AbstractInvoker {
 
     @Override
     protected void initTasks() {
-        taskQueue.initSingleTasks(className, tableName, tableInfos);
+        taskQueue.initSingleTasks(className, tableName,columnList,primaryKey);
     }
 
 

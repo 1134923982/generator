@@ -27,6 +27,8 @@ public abstract class AbstractInvoker implements Invoker {
     protected String parentForeignKey;
     protected List<ColumnEntity> columnList;
     protected List<ColumnInfo> tableInfos;
+    //表的主键
+    protected ColumnEntity primaryKey;
     protected List<ColumnInfo> parentTableInfos;
     protected ConnectionUtil connectionUtil = new ConnectionUtil();
     protected TaskQueue taskQueue = new TaskQueue();
@@ -121,6 +123,11 @@ public abstract class AbstractInvoker implements Invoker {
         return parentForeignKey;
     }
 
+    public ColumnEntity getPrimaryKey() {
+        return primaryKey;
+    }
 
-
+    public void setPrimaryKey(ColumnEntity primaryKey) {
+        this.primaryKey = primaryKey;
+    }
 }

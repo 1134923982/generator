@@ -6,7 +6,7 @@ var vm = new Vue({
     data: {
         showList: true,
         title: null,
-        ${ClassName}:{},
+        UserDetail:{},
         page:{
             pageTotal:0,
             pageNum:1,
@@ -19,13 +19,33 @@ var vm = new Vue({
                 align: 'center',
                 type: 'selection'
             },
-            <#list columns! as column>
             {
-                title: '${column.attrname}',
-                key: '${column.attrname}',
+                title: 'Id',
+                key: 'id',
+                align: 'center',
+                width:100,
+                sortable: true
+            },
+            {
+                title: '姓名',
+                key: 'userid',
                 align: 'center'
-            }<#if column_has_next>,</#if>
-            </#list>
+            },
+            {
+                title: '姓名',
+                key: 'name',
+                align: 'center'
+            },
+            {
+                title: '姓名',
+                key: 'sex',
+                align: 'center'
+            },
+            {
+                title: '姓名',
+                key: 'type',
+                align: 'center'
+            }
         ],
         data:[],
         q: {
@@ -36,7 +56,7 @@ var vm = new Vue({
     },
     methods: {
         init:function(){
-            var url="${pathName}/list";
+            var url="userdetail/list";
             var params={
                 page:{pageNum:vm.page.pageNum,pageSize:vm.page.pageSize},
                 map:{}
@@ -47,7 +67,8 @@ var vm = new Vue({
                 data:JSON.stringify(params),
                 contentType:"application/json",
                 success:function(data){
-
+                    vm.data=data.page.list;
+                    vm.page.pageTotal=data.page.totalCount;
                 }
             })
         },

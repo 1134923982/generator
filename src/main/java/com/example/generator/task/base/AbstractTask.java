@@ -1,5 +1,6 @@
 package com.example.generator.task.base;
 
+import com.example.generator.entity.ColumnEntity;
 import com.example.generator.entity.ColumnInfo;
 import com.example.generator.utils.ConfigUtil;
 import com.example.generator.utils.StringUtil;
@@ -24,8 +25,11 @@ public abstract class AbstractTask implements Serializable {
     protected String foreignKey;
     protected String relationalTableName;
     protected String parentForeignKey;
+    protected List<ColumnEntity> columnList;
     protected List<ColumnInfo> tableInfos;
     protected List<ColumnInfo> parentTableInfos;
+    //表的主键
+    protected ColumnEntity primaryKey;
 
     /**
      * Controller、Service、Dao
@@ -34,6 +38,25 @@ public abstract class AbstractTask implements Serializable {
      */
     public AbstractTask(String className) {
         this.className = className;
+    }
+
+
+    /**
+     * html
+     */
+    public AbstractTask(String className, List<ColumnEntity> columnList) {
+        this.className = className;
+        this.columnList=columnList;
+    }
+
+    /**
+     * mappers
+     */
+    public AbstractTask(String className,String tableName,List<ColumnEntity> columnList,ColumnEntity primaryKey) {
+        this.tableName=tableName;
+        this.className = className;
+        this.columnList=columnList;
+        this.primaryKey=primaryKey;
     }
 
     /**

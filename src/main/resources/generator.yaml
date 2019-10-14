@@ -1,5 +1,5 @@
 author: Liumq
-packageName: com.example
+packageName: com.example.generator
 path:
   controller: controller
   service: service.impl

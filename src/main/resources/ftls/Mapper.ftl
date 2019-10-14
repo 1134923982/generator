@@ -2,76 +2,42 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="${BasePackageName}${DaoPackageName}.${ClassName}Dao">
 
-    <resultMap id="${EntityName}ResultMap" type="${BasePackageName}${EntityPackageName}.${ClassName}">
-        ${ResultMap}
-        ${Association}
-        ${Collection}
+    <resultMap type="${BasePackageName}entity.${ClassName}Entity" id="${EntityName}Map">
+        <#list columns! as column>
+        <result property="${column.attrname}" column="${column.columnName}"/>
+        </#list>
     </resultMap>
 
-    <sql id="${EntityName}Columns">
-        ${ColumnMap}
-    </sql>
 
-    <sql id="${EntityName}Joins">
-        ${Joins}
-    </sql>
-
-    <select id="get" resultMap="${EntityName}ResultMap">
-        SELECT
-        <include refid="${EntityName}Columns" />
-        FROM ${TableName} <include refid="${EntityName}Joins" />
-        <where>
-        ${TableName}.${PrimaryKey} = ${Id}
-        </where>
+    <select id="queryList" resultType="${BasePackageName}entity.${ClassName}Entity">
+        select
+        <#list columns! as column>
+           `${column.columnName}`<#if column_has_next>,</#if>
+        </#list>
+        from ${TableName}
+        WHERE 1=1
+        <if test="name != null and name.trim() != ''">
+            AND name LIKE concat('%',${r'#{name}'},'%')
+        </if>
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${r'${sidx}'} ${r'${order}'}
+            </when>
+            <otherwise>
+                order by ${PrimaryKey.columnName} desc
+            </otherwise>
+        </choose>
+        <if test="offset != null and limit != null">
+            limit ${r'#{offset}'},${r'#{limit}'}
+        </if>
     </select>
 
-    <select id="findList" resultMap="${EntityName}ResultMap">
-        SELECT
-        <include refid="${EntityName}Columns" />
-        FROM ${TableName} <include refid="${EntityName}Joins" />
-        <where>
-            <#-- AND ${TableName}.name LIKE concat('%',#{name},'%')-->
-        </where>
+    <select id="queryTotal" resultType="int">
+        select count(*) from ${TableName}
+        WHERE 1=1
+        <if test="name != null and name.trim() != ''">
+            AND name LIKE concat('%',${r'#{name}'},'%')
+        </if>
     </select>
-
-    <select id="findAllList" resultMap="${EntityName}ResultMap">
-        SELECT
-        <include refid="${EntityName}Columns" />
-        FROM ${TableName} <include refid="${EntityName}Joins" />
-        <where>
-        </where>
-    </select>
-
-    <insert id="insert">
-        INSERT INTO ${TableName}(
-            ${InsertProperties}
-        )
-        VALUES (
-            ${InsertValues}
-        )
-    </insert>
-
-    <insert id="insertBatch">
-        INSERT INTO ${TableName}(
-            ${InsertProperties}
-        )
-        VALUES
-        <foreach collection ="list" item="${EntityName}" separator =",">
-        (
-            ${InsertBatchValues}
-        )
-        </foreach>
-    </insert>
-
-    <update id="update">
-        UPDATE ${TableName} SET
-        ${UpdateProperties}
-        WHERE ${PrimaryKey} = ${WhereId}
-    </update>
-
-    <update id="delete">
-        DELETE FROM ${TableName}
-        WHERE ${PrimaryKey} = ${WhereId}
-    </update>
 
 </mapper>

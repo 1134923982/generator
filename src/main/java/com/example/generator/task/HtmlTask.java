@@ -1,5 +1,6 @@
 package com.example.generator.task;
 
+import com.example.generator.entity.ColumnEntity;
 import com.example.generator.task.base.AbstractTask;
 import com.example.generator.utils.ConfigUtil;
 import com.example.generator.utils.FileUtil;
@@ -11,6 +12,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.zip.ZipOutputStream;
 
@@ -24,11 +26,15 @@ public class HtmlTask extends AbstractTask {
         super(className);
     }
 
+    public HtmlTask(String className, List<ColumnEntity> columnList){
+        super(className,columnList);
+    }
+
     @Override
     public void run(ZipOutputStream zip) throws IOException, TemplateException {
         // 生成html填充数据
         System.out.println("Generating " + className + ".html");
-        Map<String, String> htmlData = new HashMap<>();
+        Map<String, Object> htmlData = new HashMap<>();
         htmlData.put("BasePackageName", ConfigUtil.getConfiguration().getPackageName());
         htmlData.put("InterfacePackageName", ConfigUtil.getConfiguration().getPath().getHtml());
         htmlData.put("EntityPackageName", ConfigUtil.getConfiguration().getPath().getEntity());
@@ -36,8 +42,11 @@ public class HtmlTask extends AbstractTask {
         htmlData.put("Date", new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
         htmlData.put("ClassName", className);
         htmlData.put("EntityName", StringUtil.firstToLowerCase(className));
+        htmlData.put("columns",columnList);
+        htmlData.put("comments","");
+        htmlData.put("pathName",className.toLowerCase());
         String filePath = FileUtil.getResourcePath() + StringUtil.package2Path(ConfigUtil.getConfiguration().getPath().getHtml());
-        String fileName = className + ".html";
+        String fileName = className.toLowerCase() + ".html";
         // 生成Service接口文件
         FileUtil.generateToJava(FreemarketConfigUtils.TYPE_HTML, htmlData, filePath + fileName,zip);
     }
